@@ -74,6 +74,35 @@ describe("setActiveTool()", () => {
     expect(h.state.activeTool.customType).toBe("comment");
   });
 });
+
+describe("main toolbar", () => {
+  it("groups the eraser directly after the selection tool", async () => {
+    await render(<Excalidraw />);
+
+    const toolbar =
+      GlobalTestState.renderResult.container.querySelector(".App-toolbar");
+    const toolOrder = Array.from(
+      toolbar!.querySelectorAll(
+        '[data-testid^="toolbar-"]:not([data-testid="toolbar-lock"])',
+      ),
+    ).map((tool) => tool.getAttribute("data-testid"));
+
+    expect(toolOrder).toEqual([
+      "toolbar-hand",
+      "toolbar-selection",
+      "toolbar-eraser",
+      "toolbar-rectangle",
+      "toolbar-diamond",
+      "toolbar-ellipse",
+      "toolbar-arrow",
+      "toolbar-line",
+      "toolbar-freedraw",
+      "toolbar-text",
+      "toolbar-image",
+    ]);
+  });
+});
+
 describe("findShapeByKey()", () => {
   const appWithPreferredTool = (
     preferredSelectionTool: "selection" | "lasso",
