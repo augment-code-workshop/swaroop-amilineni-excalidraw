@@ -146,6 +146,16 @@ describe("contextMenu element", () => {
         contextMenu?.querySelector(`li[data-testid="${item}"]`),
       ).not.toBeNull();
     });
+
+    const contextMenuItemNames = Array.from(contextMenuOptions ?? [], (item) =>
+      item.getAttribute("data-testid"),
+    );
+    expect(contextMenuItemNames.indexOf("duplicateSelection")).toBe(
+      contextMenuItemNames.indexOf("paste") + 1,
+    );
+    expect(contextMenuItemNames.indexOf("toggleElementLock")).toBe(
+      contextMenuItemNames.indexOf("deleteSelectedElements") - 1,
+    );
   });
 
   it("shows context menu for element", () => {
