@@ -2264,7 +2264,6 @@ class App extends React.Component<AppProps, AppState> {
               : POINTER_EVENTS.enabled,
           }}
           onPointerDown={(event) => this.handleCanvasPointerDown(event)}
-          onWheel={(event) => this.handleWheel(event)}
           onContextMenu={this.handleCanvasContextMenu}
           onDoubleClick={() => {
             this.setState({

@@ -148,11 +148,11 @@ describe("baseline (interactive & ui enabled by default)", () => {
 
     const { scrollX, scrollY } = h.state;
     fireEvent.wheel(frameNameInput, { deltaX: 30, deltaY: 40 });
-    expect([h.state.scrollX, h.state.scrollY]).not.toEqual([scrollX, scrollY]);
+    expect(h.state.scrollX).toBe(scrollX - 30);
+    expect(h.state.scrollY).toBe(scrollY - 40);
 
-    const initialZoom = h.state.zoom.value;
     fireEvent.wheel(frameNameInput, { ctrlKey: true, deltaY: -100 });
-    expect(h.state.zoom.value).toBeGreaterThan(initialZoom);
+    expect(h.state.zoom.value).toBe(1.1);
   });
 
   it("renders UI chrome", () => {
