@@ -128,6 +128,33 @@ describe("baseline (interactive & ui enabled by default)", () => {
     expect(UI.queryContextMenu()).not.toBe(null);
   });
 
+  it("handles wheel pan and zoom over the frame-name input", async () => {
+    const frame = API.createElement({
+      type: "frame",
+      x: 20,
+      y: 30,
+      width: 80,
+      height: 50,
+    });
+    API.setElements([frame]);
+    API.updateElement(frame, { name: "Frame" });
+    API.setAppState({ editingFrame: frame.id });
+
+    const frameNameInput = await waitFor(() => {
+      const input = queryContainer(".frame-name input");
+      expect(input).not.toBe(null);
+      return input as HTMLInputElement;
+    });
+
+    const { scrollX, scrollY } = h.state;
+    fireEvent.wheel(frameNameInput, { deltaX: 30, deltaY: 40 });
+    expect(h.state.scrollX).toBe(scrollX - 30);
+    expect(h.state.scrollY).toBe(scrollY - 40);
+
+    fireEvent.wheel(frameNameInput, { ctrlKey: true, deltaY: -100 });
+    expect(h.state.zoom.value).toBe(1.1);
+  });
+
   it("renders UI chrome", () => {
     expect(queryContainer(".layer-ui__wrapper")).not.toBe(null);
     expect(queryContainer(".App-toolbar")).not.toBe(null);
